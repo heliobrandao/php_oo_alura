@@ -1,19 +1,16 @@
 <?php
-
 class Conta
 {
     
-    private string $cpfTitular;
-    private string $nomeTitular;
+    private Titular $titular;
     private float $saldo = 0;
     private static $numeroDeContas = 0; //atributo da classe em si nao das instâncias
 
-    public function __construct(string $cpfTitular, string $nomeTitular)
+    public function __construct(Titular $titular)
     {
-        $this->cpfTitular = $cpfTitular;
-        $this->validaNomeTitular($nomeTitular);
-        $this->nomeTitular = $nomeTitular;
+        $this->titular = $titular;
         $this->saldo = 0;
+
         self::$numeroDeContas++;//acessamos atributos ou métodos estáticos.
 
     }
@@ -69,23 +66,16 @@ class Conta
         return $this->saldo;
     }
 
-    public function recuperaCpfTitular(): string
+    public function recuperaNomeTitular(): string 
     {
-        return $this->cpfTitular;
+        return $this->titular->recuperaNome();
     }
 
-    public function recuperaNomeTitular(): string
+    public function recuperaCpfTitular(): string 
     {
-        return $this->nomeTitular;
+        return $this->titular->recuperaCpf();
     }
 
-    private function validaNomeTitular(string $nomeTitular)
-    {
-        if (strlen($nomeTitular) < 5){
-            echo "Nome precisa ter ao menos 5 caracteres" . PHP_EOL;
-            exit();
-        }
-    }
     
     public static function recuperaNumeroDeContas(): int 
     {
