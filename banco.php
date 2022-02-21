@@ -7,5 +7,9 @@ var_dump($primeiraConta);
 $primeiraConta->deposita(500);
 $primeiraConta->saca(300);
 
-echo $primeiraConta->recuperaSaldo();
-echo $primeiraConta->recuperaCpfTitular();
+echo $primeiraConta->recuperaNomeTitular() . PHP_EOL;
+echo $primeiraConta->recuperaCpfTitular() . PHP_EOL;
+echo $primeiraConta->recuperaSaldo()  . PHP_EOL;
+
+$segundaConta = new Conta('987.456.321-11', 'Hélio Brandão');
+var_dump($segundaConta);
