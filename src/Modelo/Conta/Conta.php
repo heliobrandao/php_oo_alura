@@ -3,18 +3,18 @@
 namespace Alura\Banco\Modelo\Conta;
 
 
-class Conta
+abstract class Conta
 {
     
     private Titular $titular;
-    private float $saldo = 0;
+    protected float $saldo;
     private static $numeroDeContas = 0; //atributo da classe em si nao das instâncias
+
 
     public function __construct(Titular $titular)
     {
         $this->titular = $titular;
         $this->saldo = 0;
-
         self::$numeroDeContas++;//acessamos atributos ou métodos estáticos.
 
     }
@@ -26,12 +26,14 @@ class Conta
 
     public function saca(float $valorASacar): void
     {
-        if ($valorASacar > $this->saldo) {
+        $tarifaSaque = $valorASacar * $this->percentualTarifa();
+        $valorSaque = $valorASacar + $tarifaSaque;
+        if ($valorSaque > $this->saldo) {
             echo "Saldo indisponível";
             return;
         }
 
-        $this->saldo -= $valorASacar;
+        $this->saldo -= $valorSaque;
     }
 
     public function deposita(float $valorADepositar): void
@@ -42,17 +44,6 @@ class Conta
         }
 
         $this->saldo += $valorADepositar;
-    }
-
-    public function transfere(float $valorATransferir, Conta $contaDestino): void
-    {
-        if ($valorATransferir > $this->saldo) {
-            echo "Saldo indisponível";
-            return;
-        }
-
-        $this->sacar($valorATransferir);
-        $contaDestino->depositar($valorATransferir);
     }
 //após a criação do construtor os métodos defineNomeTitular e defineCpfTitular não são mais necessários
     // public function defineCpfTitular(string $cpf): void //setCpfTitular
@@ -85,5 +76,7 @@ class Conta
     {
         return self::$numeroDeContas;
     }
+    // método abstrato ainda não está completamente implementado! precisamos extender
+    abstract protected function percentualTarifa(): float;
 
 }
